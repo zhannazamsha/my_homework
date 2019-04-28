@@ -8,8 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -20,32 +20,41 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class LoanApplication implements Serializable {
 
+    public static final short DEFAULT_TERM_VALUE = 6;
+
     @Id
     @GeneratedValue
     private long id;
 
+    @NotNull(message = "Loan amount is empty")
     @Column(nullable = false)
     private Float loanAmount;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Company registration number is empty")
+    @Column(nullable = false)  //, unique = true
     private String companyRegistrationNum;
 
+    @NotBlank(message = "Email is empty")
     @Column(nullable = false)
     private String email;
 
+    @NotBlank(message = "Phone number is empty")
     @Column(nullable = false)
     private String phone;
 
     private Float yearlyTurnover;
 
+    @Min(value = 1, message = "Term is out of range (1-12) ")
+    @Max(value = 12, message = "Term is out of range (1-12) ")
     @Column(nullable = false)
-    private Byte term;
+    private Short term;
 
     private String companyName;
 
     private String companyType;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private LoanApplicationStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)

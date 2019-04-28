@@ -41,7 +41,7 @@ public class LoanApplicationServiceIntegrationTest {
     public void setUp() {
         LoanApplication loanApplication = new LoanApplication().builder()
                 .loanAmount(10000f).companyRegistrationNum("333444").email("mail@mail.lv")
-                .phone("324535").yearlyTurnover(100f).term((byte) 5).status(LoanApplicationStatus.APPLIED).build();
+                .phone("324535").yearlyTurnover(100f).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         List loanApplications = Lists.newArrayList(loanApplication);
         Mockito.when(loanApplicationRepository.findByCompanyRegistrationNum("333444"))
                 .thenReturn(loanApplication);
