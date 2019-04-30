@@ -26,8 +26,8 @@ public class LoanApplicationServiceIntegrationTest {
     static class LoanApplicationServiceTestContextConfiguration {
 
         @Bean
-        public LoanApplicationService employeeService() {
-            return new LoanApplicationService();
+        public LoanApplicationServiceImpl employeeService() {
+            return new LoanApplicationServiceImpl();
         }
     }
 
@@ -54,6 +54,16 @@ public class LoanApplicationServiceIntegrationTest {
         LoanApplication found = loanApplicationService.findByRegistrationNum(registrationNum);
         assertThat(found.getCompanyRegistrationNum())
                 .isEqualTo(registrationNum);
+    }
+
+    @Test
+    public void rejectApplication_ShouldBeFoundByRegistrationNum() {
+        String registrationNum = "333444";
+        LoanApplication found = loanApplicationService.rejectApplication(registrationNum);
+        assertThat(found.getCompanyRegistrationNum())
+                .isEqualTo(registrationNum);
+        assertThat(found.getStatus())
+                .isEqualTo(LoanApplicationStatus.REJECTED);
     }
 
     @Test

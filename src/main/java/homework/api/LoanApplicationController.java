@@ -29,4 +29,13 @@ public class LoanApplicationController {
         List<LoanApplication> allApplications = loanApplicationService.loadAll();
         return ResponseEntity.ok(allApplications);
     }
+
+    @PostMapping("/reject")
+    public ResponseEntity<ApplyLoanResult> rejectApplication(@Valid @RequestBody String registrationNumber) {
+        loanApplicationService.rejectApplication(registrationNumber);
+        ApplyLoanResult bookingResult = ApplyLoanResult.builder()
+                .success(true)
+                .build();
+        return ResponseEntity.ok(bookingResult);
+    }
 }

@@ -4,7 +4,7 @@ package homework.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import homework.models.LoanApplicationStatus;
 import homework.models.LoanApplication;
-import homework.services.LoanApplicationService;
+import homework.services.LoanApplicationServiceImpl;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class LoanApplicationControllerTest {
 
 
     @MockBean
-    private LoanApplicationService loanApplicationService;
+    private LoanApplicationServiceImpl loanApplicationService;
 
 
     @Test
@@ -56,11 +56,22 @@ public class LoanApplicationControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void rejectApplication_ReturnsHttpStatusOk() throws Exception {
+        LoanApplication loanApplication = buildLoanApplicationTestObject();
+        given(loanApplicationService.rejectApplication(loanApplication.getCompanyName())).willReturn(loanApplication);
+        mockMvc.perform(
+                post("/reject").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loanApplication)))
+                .andExpect(status().isOk());
+    }
+
+
 
     private LoanApplication buildLoanApplicationTestObject() {
         return new LoanApplication().builder()
                 .loanAmount(10000f).companyRegistrationNum("333444").email("mail@mail.lv")
-                .phone("324535").yearlyTurnover(100f).term((byte) 5).status(LoanApplicationStatus.APPLIED).build();
+                .phone("324535").yearlyTurnover(100f).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
 
     }
 
