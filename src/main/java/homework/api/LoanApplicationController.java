@@ -4,7 +4,10 @@ import homework.models.LoanApplication;
 import homework.services.LoanApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,12 +19,9 @@ public class LoanApplicationController {
     private LoanApplicationService loanApplicationService;
 
     @PostMapping("/applyloan")
-    public ResponseEntity<ApplyLoanResult> applyLoan(@Valid @RequestBody LoanApplication loanApplication) {
-        loanApplicationService.applyApplication(loanApplication);
-        ApplyLoanResult bookingResult = ApplyLoanResult.builder()
-                .success(true)
-                .build();
-        return ResponseEntity.ok(bookingResult);
+    public ResponseEntity<LoanApplication> applyLoan(@Valid @RequestBody LoanApplication loanApplicationFormData) {
+        LoanApplication loanApplication = loanApplicationService.applyApplication(loanApplicationFormData);
+        return ResponseEntity.ok(loanApplication);
     }
 
     @GetMapping("/allapplications")
@@ -31,11 +31,8 @@ public class LoanApplicationController {
     }
 
     @PostMapping("/reject")
-    public ResponseEntity<ApplyLoanResult> rejectApplication(@Valid @RequestBody String registrationNumber) {
-        loanApplicationService.rejectApplication(registrationNumber);
-        ApplyLoanResult bookingResult = ApplyLoanResult.builder()
-                .success(true)
-                .build();
-        return ResponseEntity.ok(bookingResult);
+    public ResponseEntity<LoanApplication> rejectApplication(@Valid @RequestBody String registrationNumber) {
+        LoanApplication loanApplication = loanApplicationService.rejectApplication(registrationNumber);
+        return ResponseEntity.ok(loanApplication);
     }
 }

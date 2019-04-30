@@ -1,6 +1,7 @@
 package homework.services;
 
 import com.google.common.collect.Lists;
+import homework.exceptions.CompanyInBlacklistException;
 import homework.models.LoanApplication;
 import homework.models.LoanApplicationStatus;
 import homework.repositories.LoanApplicationRepository;
@@ -16,8 +17,12 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 
     @Autowired
     private LoanApplicationRepository loanApplicationRepository;
+    @Autowired
+    BlacklistService blacklistService;
 
     public LoanApplication applyApplication(LoanApplication loanApplication) {
+        if (blacklistService.isCompanyBlacklisted(loanApplication))
+            throw new CompanyInBlacklistException("Company is in Blacklist");
         setDefaultValues(loanApplication);
         loanApplicationRepository.save(loanApplication);
         return loanApplication;

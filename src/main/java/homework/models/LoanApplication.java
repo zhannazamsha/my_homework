@@ -8,7 +8,10 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -31,7 +34,7 @@ public class LoanApplication implements Serializable {
     private Float loanAmount;
 
     @NotBlank(message = "Company registration number is empty")
-    @Column(nullable = false)  //, unique = true
+    @Column(nullable = false, unique = true)  //, unique = true
     private String companyRegistrationNum;
 
     @NotBlank(message = "Email is empty")
