@@ -28,14 +28,14 @@ public class LoanApplication implements Serializable {
 
     @NotNull(message = "Loan amount is empty")
     @Column(nullable = false)
-    private Float loanAmount;
+    private Double loanAmount;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    private Float yearlyTurnover;
+    private Double yearlyTurnover;
 
     @Min(value = 1, message = "Term is out of range (1-12) ")
     @Max(value = 12, message = "Term is out of range (1-12) ")

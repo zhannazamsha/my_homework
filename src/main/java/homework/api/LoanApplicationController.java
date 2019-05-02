@@ -1,6 +1,7 @@
 package homework.api;
 
 import homework.models.LoanApplication;
+import homework.models.LoanScheduler;
 import homework.services.LoanApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,11 @@ public class LoanApplicationController {
     public ResponseEntity<LoanApplication> rejectApplication(@Valid @RequestBody Long id) {
         LoanApplication loanApplication = loanApplicationService.rejectApplication(id);
         return ResponseEntity.ok(loanApplication);
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<LoanScheduler> confirmApplication(@Valid @RequestBody Long id) {
+        LoanScheduler loanScheduler = loanApplicationService.confirmApplication(id);
+        return ResponseEntity.ok(loanScheduler);
     }
 }

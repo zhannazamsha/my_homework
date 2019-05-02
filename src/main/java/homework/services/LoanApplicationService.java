@@ -1,6 +1,7 @@
 package homework.services;
 
 import homework.models.LoanApplication;
+import homework.models.LoanScheduler;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ public interface LoanApplicationService {
     LoanApplication rejectApplication(Long id);
 
     List<LoanApplication> findByRegistrationNum(String registrationNumber);
+
+    LoanScheduler confirmApplication(Long id);
+
 }

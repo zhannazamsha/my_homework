@@ -49,9 +49,9 @@ public class BlacklistServiceIntegrationTest {
         company = new Company().builder().registrationNumber("333444").email("mail@mail.lv")
                 .phone("324535").build();
         LoanApplication loanApplication = new LoanApplication().builder().id(1L)
-                .loanAmount(10000f).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
+                .loanAmount(10000.00).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         LoanApplication loanApplication2 = new LoanApplication().builder().id(2L)
-                .loanAmount(20000f).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
+                .loanAmount(20000.00).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         List<LoanApplication> loanApplications = Lists.newArrayList(loanApplication, loanApplication2);
         Mockito.when(loanApplicationRepository.findByCompanyAndDate(company, new Date()))
                 .thenReturn(loanApplications);
@@ -65,7 +65,7 @@ public class BlacklistServiceIntegrationTest {
     @Test
     public void blacklistrCheck_CompanyShouldBeInBlacklist() {
         LoanApplication loanApplication = new LoanApplication().builder().id(1L)
-                .loanAmount(10000f).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
+                .loanAmount(10000.00).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         loanApplication.getCompany().setBlacklisted(true);
         boolean isBlacklisted = blacklistService.isCompanyBlacklisted(loanApplication);
         assertThat(isBlacklisted)

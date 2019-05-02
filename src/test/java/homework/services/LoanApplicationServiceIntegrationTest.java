@@ -46,13 +46,16 @@ public class LoanApplicationServiceIntegrationTest {
     @MockBean
     private BlacklistService blacklistService;
 
+    @MockBean
+    private ValidationService ValidationService;
+
 
     @Before
     public void setUp() {
         Company company = new Company().builder().registrationNumber("333444").email("mail@mail.lv")
                 .phone("324535").blacklisted(false).build();
         LoanApplication loanApplication = new LoanApplication().builder().id(1L)
-                .loanAmount(10000f).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
+                .loanAmount(10000.00).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         List loanApplications = Lists.newArrayList(loanApplication);
 
         Mockito.when(loanApplicationRepository.findById(1L))

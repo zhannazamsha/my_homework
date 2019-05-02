@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import homework.models.Company;
 import homework.models.LoanApplication;
 import homework.models.LoanApplicationStatus;
+import homework.models.LoanScheduler;
 import homework.services.LoanApplicationService;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -72,13 +73,23 @@ public class LoanApplicationControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    public void confirmApplication_ReturnsHttpStatusOk() throws Exception {
+        LoanScheduler loanScheduler = new LoanScheduler();
+        given(loanApplicationService.confirmApplication(loanApplication.getId())).willReturn(loanScheduler);
+        mockMvc.perform(
+                post("/confirm").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loanApplication.getId())))
+                .andExpect(status().isOk());
+    }
+
 
 
     private LoanApplication buildLoanApplicationTestObject() {
         Company company = new Company().builder().companyId(1L).registrationNumber("333444").email("mail@mail.lv")
                 .phone("324535").build();
         return new LoanApplication().builder()
-                .id(1L).loanAmount(10000f).company(company).yearlyTurnover(100f).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
+                .id(1L).loanAmount(10000.00).company(company).yearlyTurnover(100.00).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
 
     }
 

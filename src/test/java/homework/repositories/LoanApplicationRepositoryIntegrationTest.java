@@ -96,9 +96,9 @@ public class LoanApplicationRepositoryIntegrationTest {
         Company company = new Company().builder().registrationNumber("333444").email("mail@mail.lv")
                 .phone("324535").build();
         return new LoanApplication().builder()
-                .loanAmount(10000f)
+                .loanAmount(10000.00)
                 .company(company)
-                .yearlyTurnover(100f)
+                .yearlyTurnover(100.00)
                 .term((short) 5)
                 .status(LoanApplicationStatus.APPLIED)
                 .creationDate(new Date())

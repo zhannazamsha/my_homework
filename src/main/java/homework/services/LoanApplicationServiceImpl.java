@@ -6,6 +6,7 @@ import homework.exceptions.CompanyNotFoundException;
 import homework.models.Company;
 import homework.models.LoanApplication;
 import homework.models.LoanApplicationStatus;
+import homework.models.LoanScheduler;
 import homework.repositories.CompanyRepository;
 import homework.repositories.LoanApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
     @Autowired
     private CompanyRepository companyRepository;
     @Autowired
-    BlacklistService blacklistService;
+    private BlacklistService blacklistService;
+    @Autowired
+    private ValidationService validationService;
 
     public LoanApplication applyApplication(LoanApplication loanApplication) {
         if (blacklistService.isCompanyBlacklisted(loanApplication))
@@ -41,6 +44,20 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
         Optional<Company> company = companyRepository.findByRegistrationNumber(registrationNumber);
         company.orElseThrow(() -> new CompanyNotFoundException("Company not found"));
         return loanApplicationRepository.findByCompany(company.get());
+    }
+
+    @Override
+    public LoanScheduler confirmApplication(Long id) {
+        Optional<LoanApplication> loanApplication = loanApplicationRepository.findById(id);
+        loanApplication.orElseThrow(() -> new ApplicationNotFoundException("Loan application not found"));
+        LoanApplication foundLoanApplication = loanApplication.get();
+        if (!foundLoanApplication.getStatus().equals(LoanApplicationStatus.CONFIRMED)) {
+            validationService.validateLoanApplication(foundLoanApplication);
+            foundLoanApplication.setConfirmationDate(new Date());
+            foundLoanApplication.setStatus(LoanApplicationStatus.CONFIRMED);
+            loanApplicationRepository.save(foundLoanApplication);
+        }
+        return validationService.calculateLoanScheduler(foundLoanApplication);
     }
 
     public List<LoanApplication> loadAll() {
