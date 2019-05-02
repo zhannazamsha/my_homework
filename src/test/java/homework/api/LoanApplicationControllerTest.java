@@ -2,10 +2,12 @@ package homework.api;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import homework.models.LoanApplicationStatus;
+import homework.models.Company;
 import homework.models.LoanApplication;
-import homework.services.LoanApplicationServiceImpl;
+import homework.models.LoanApplicationStatus;
+import homework.services.LoanApplicationService;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +30,22 @@ public class LoanApplicationControllerTest {
     private MockMvc mockMvc;
 
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @MockBean
-    private LoanApplicationServiceImpl loanApplicationService;
+    private LoanApplicationService loanApplicationService;
+
+    private LoanApplication loanApplication;
+
+    @Before
+    public void setUp() {
+        loanApplication = buildLoanApplicationTestObject();
+    }
 
 
     @Test
     public void applyLoan_ReturnsHttpStatusOk() throws Exception {
-        LoanApplication loanApplication = buildLoanApplicationTestObject();
         given(loanApplicationService.applyApplication(loanApplication)).willReturn(loanApplication);
         System.out.println(objectMapper.writeValueAsString(loanApplication));
         mockMvc.perform(
@@ -48,7 +56,6 @@ public class LoanApplicationControllerTest {
 
     @Test
     public void loadAllApplications_OneObjectAdded_returnJson() throws Exception {
-        LoanApplication loanApplication = buildLoanApplicationTestObject();
         given(loanApplicationService.applyApplication(loanApplication)).willReturn(loanApplication);
         mockMvc.perform(
                 get("/allapplications").contentType(MediaType.APPLICATION_JSON)
@@ -58,20 +65,20 @@ public class LoanApplicationControllerTest {
 
     @Test
     public void rejectApplication_ReturnsHttpStatusOk() throws Exception {
-        LoanApplication loanApplication = buildLoanApplicationTestObject();
-        given(loanApplicationService.rejectApplication(loanApplication.getCompanyName())).willReturn(loanApplication);
+        given(loanApplicationService.rejectApplication(loanApplication.getId())).willReturn(loanApplication);
         mockMvc.perform(
                 post("/reject").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(loanApplication)))
+                        .content(objectMapper.writeValueAsString(loanApplication.getId())))
                 .andExpect(status().isOk());
     }
 
 
 
     private LoanApplication buildLoanApplicationTestObject() {
+        Company company = new Company().builder().companyId(1L).registrationNumber("333444").email("mail@mail.lv")
+                .phone("324535").build();
         return new LoanApplication().builder()
-                .loanAmount(10000f).companyRegistrationNum("333444").email("mail@mail.lv")
-                .phone("324535").yearlyTurnover(100f).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
+                .id(1L).loanAmount(10000f).company(company).yearlyTurnover(100f).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
 
     }
 

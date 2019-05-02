@@ -31,8 +31,8 @@ public class LoanApplicationController {
     }
 
     @PostMapping("/reject")
-    public ResponseEntity<LoanApplication> rejectApplication(@Valid @RequestBody String registrationNumber) {
-        LoanApplication loanApplication = loanApplicationService.rejectApplication(registrationNumber);
+    public ResponseEntity<LoanApplication> rejectApplication(@Valid @RequestBody Long id) {
+        LoanApplication loanApplication = loanApplicationService.rejectApplication(id);
         return ResponseEntity.ok(loanApplication);
     }
 }

@@ -9,7 +9,7 @@ public interface LoanApplicationService {
 
     List<LoanApplication> loadAll();
 
-    LoanApplication rejectApplication(String registrationNum);
+    LoanApplication rejectApplication(Long id);
 
-    LoanApplication findByRegistrationNum(String registrationNumber);
+    List<LoanApplication> findByRegistrationNum(String registrationNumber);
 }
