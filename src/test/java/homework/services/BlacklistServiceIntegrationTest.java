@@ -1,10 +1,10 @@
 package homework.services;
 
-import homework.models.Company;
-import homework.models.LoanApplication;
-import homework.models.LoanApplicationStatus;
-import homework.repositories.CompanyRepository;
-import homework.repositories.LoanApplicationRepository;
+import homework.domains.Company;
+import homework.domains.LoanApplication;
+import homework.domains.LoanApplicationStatus;
+import homework.domains.repositories.CompanyRepository;
+import homework.domains.repositories.LoanApplicationRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,9 +61,8 @@ public class BlacklistServiceIntegrationTest {
 
     }
 
-
     @Test
-    public void blacklistrCheck_CompanyShouldBeInBlacklist() {
+    public void blacklisttCheck_CompanyShouldBeInBlacklist() {
         LoanApplication loanApplication = new LoanApplication().builder().id(1L)
                 .loanAmount(10000.00).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         loanApplication.getCompany().setBlacklisted(true);
@@ -71,5 +70,6 @@ public class BlacklistServiceIntegrationTest {
         assertThat(isBlacklisted)
                 .isEqualTo(true);
     }
+
 
 }

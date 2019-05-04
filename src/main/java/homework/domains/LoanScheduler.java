@@ -1,5 +1,6 @@
-package homework.models;
+package homework.domains;
 
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,16 @@ public class LoanScheduler implements Serializable {
     private double totalPrincipal;
     private double totalCommission;
     private Date confirmationDate;
-    private List<MonthlyPayment> monthlyPayments;
+    @Builder.Default
+    private List<MonthlyPayment> monthlyPayments = Lists.newArrayList();
+
+    public void createMonthlyExpens(Date termDate, double monthlyPrinciple, double monthlyCommision) {
+        MonthlyPayment monthlyPayment = new MonthlyPayment();
+        monthlyPayment.setCommission(monthlyCommision);
+        monthlyPayment.setPrincipal(monthlyPrinciple);
+        monthlyPayment.setTermDate(termDate);
+        monthlyPayments.add(monthlyPayment);
+    }
 
     @Data
     @AllArgsConstructor

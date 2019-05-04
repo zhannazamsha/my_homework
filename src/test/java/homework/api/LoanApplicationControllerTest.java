@@ -2,11 +2,12 @@ package homework.api;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import homework.models.Company;
-import homework.models.LoanApplication;
-import homework.models.LoanApplicationStatus;
-import homework.models.LoanScheduler;
-import homework.services.LoanApplicationService;
+import homework.domains.Company;
+import homework.domains.LoanApplication;
+import homework.domains.LoanApplicationStatus;
+import homework.domains.LoanScheduler;
+import homework.services.ApplyLoanApplicationService;
+import homework.services.ConfirmRejectLoanApplicationService;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,10 @@ public class LoanApplicationControllerTest {
 
 
     @MockBean
-    private LoanApplicationService loanApplicationService;
+    private ConfirmRejectLoanApplicationService confirmRejectLoanApplicationService;
+
+    @MockBean
+    private ApplyLoanApplicationService applyLoanApplicationService;
 
     private LoanApplication loanApplication;
 
@@ -47,7 +51,7 @@ public class LoanApplicationControllerTest {
 
     @Test
     public void applyLoan_ReturnsHttpStatusOk() throws Exception {
-        given(loanApplicationService.applyApplication(loanApplication)).willReturn(loanApplication);
+        given(applyLoanApplicationService.applyApplication(loanApplication)).willReturn(loanApplication);
         System.out.println(objectMapper.writeValueAsString(loanApplication));
         mockMvc.perform(
                 post("/applyloan").contentType(MediaType.APPLICATION_JSON)
@@ -57,7 +61,7 @@ public class LoanApplicationControllerTest {
 
     @Test
     public void loadAllApplications_OneObjectAdded_returnJson() throws Exception {
-        given(loanApplicationService.applyApplication(loanApplication)).willReturn(loanApplication);
+        given(applyLoanApplicationService.applyApplication(loanApplication)).willReturn(loanApplication);
         mockMvc.perform(
                 get("/allapplications").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(Lists.newArrayList(loanApplication))))
@@ -66,7 +70,7 @@ public class LoanApplicationControllerTest {
 
     @Test
     public void rejectApplication_ReturnsHttpStatusOk() throws Exception {
-        given(loanApplicationService.rejectApplication(loanApplication.getId())).willReturn(loanApplication);
+        given(confirmRejectLoanApplicationService.rejectApplication(loanApplication.getId())).willReturn(loanApplication);
         mockMvc.perform(
                 post("/reject").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loanApplication.getId())))
@@ -76,7 +80,7 @@ public class LoanApplicationControllerTest {
     @Test
     public void confirmApplication_ReturnsHttpStatusOk() throws Exception {
         LoanScheduler loanScheduler = new LoanScheduler();
-        given(loanApplicationService.confirmApplication(loanApplication.getId())).willReturn(loanScheduler);
+        given(confirmRejectLoanApplicationService.confirmApplication(loanApplication.getId())).willReturn(loanScheduler);
         mockMvc.perform(
                 post("/confirm").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loanApplication.getId())))

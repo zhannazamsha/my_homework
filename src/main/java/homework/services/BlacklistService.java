@@ -1,7 +1,7 @@
 package homework.services;
 
-import homework.models.Company;
-import homework.models.LoanApplication;
+import homework.domains.Company;
+import homework.domains.LoanApplication;
 
 public interface BlacklistService {
     boolean isCompanyBlacklisted(LoanApplication loanApplication);

@@ -1,7 +1,7 @@
-package homework.repositories;
+package homework.domains.repositories;
 
-import homework.models.Company;
-import homework.models.LoanApplication;
+import homework.domains.Company;
+import homework.domains.LoanApplication;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +20,6 @@ public interface LoanApplicationRepository extends CrudRepository<LoanApplicatio
 
 
     @Query("select a from LoanApplication a where a.company.blacklisted = false")
-    List<LoanApplication> findAllNonBlocklisted();
+    List<LoanApplication> findAllNonBlacklisted();
 
 }

@@ -1,11 +1,10 @@
 package homework.services;
 
-
-import homework.models.Company;
-import homework.models.LoanApplication;
-import homework.models.LoanApplicationStatus;
-import homework.repositories.CompanyRepository;
-import homework.repositories.LoanApplicationRepository;
+import homework.domains.Company;
+import homework.domains.LoanApplication;
+import homework.domains.LoanApplicationStatus;
+import homework.domains.repositories.CompanyRepository;
+import homework.domains.repositories.LoanApplicationRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,18 +21,17 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class LoanApplicationServiceIntegrationTest {
-
+public class ApplyLoanApplicationIntegrationTest {
 
     @Autowired
-    private LoanApplicationServiceImpl loanApplicationService;
+    private ApplyLoanApplicationServiceImpl applyLoanApplicationService;
 
     @TestConfiguration
-    static class LoanApplicationServiceTestContextConfiguration {
+    static class ApplyLoanApplicationServiceTestContextConfiguration {
 
         @Bean
-        public LoanApplicationServiceImpl loanApplicationService() {
-            return new LoanApplicationServiceImpl();
+        public ApplyLoanApplicationServiceImpl applyLoanApplicationService() {
+            return new ApplyLoanApplicationServiceImpl();
         }
     }
 
@@ -60,34 +58,16 @@ public class LoanApplicationServiceIntegrationTest {
 
         Mockito.when(loanApplicationRepository.findById(1L))
                 .thenReturn(java.util.Optional.ofNullable(loanApplication));
-        Mockito.when(loanApplicationRepository.findAllNonBlocklisted()).thenReturn(loanApplications);
+        Mockito.when(loanApplicationRepository.findAllNonBlacklisted()).thenReturn(loanApplications);
 
 
     }
 
-    // @Test
-    public void loanApplication_ShouldBeFoundByRegistrationNum() {
-        String registrationNum = "333444";
-        List<LoanApplication> found = loanApplicationService.findByRegistrationNum(registrationNum);
-        assertThat(found.get(0).getCompany().getRegistrationNumber())
-                .isEqualTo(registrationNum);
-    }
-
-    @Test
-    public void rejectApplication_ShouldBeStatusRejected() {
-        String registrationNum = "333444";
-        LoanApplication found = loanApplicationService.rejectApplication(1L);
-        assertThat(found.getCompany().getRegistrationNumber())
-                .isEqualTo(registrationNum);
-        assertThat(found.getStatus())
-                .isEqualTo(LoanApplicationStatus.REJECTED);
-    }
 
     @Test
     public void loadAll_ShouldNotBeEmpty() {
-        Iterable<LoanApplication> found = loanApplicationService.loadAll();
+        Iterable<LoanApplication> found = applyLoanApplicationService.loadAll();
         assertThat(Lists.newArrayList(found).isEmpty())
                 .isEqualTo(false);
     }
-
 }

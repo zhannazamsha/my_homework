@@ -1,6 +1,6 @@
-package homework.repositories;
+package homework.domains.repositories;
 
-import homework.models.Company;
+import homework.domains.Company;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package homework.repositories;
+package homework.domains.repositories;
 
-import homework.models.Company;
+import homework.domains.Company;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

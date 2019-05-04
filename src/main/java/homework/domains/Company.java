@@ -1,4 +1,4 @@
-package homework.models;
+package homework.domains;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,6 +44,7 @@ public class Company implements Serializable {
     private String companyType;
 
     @JsonIgnore
+    @Builder.Default
     private boolean blacklisted = false;
 
 

@@ -1,7 +1,7 @@
 package homework.services;
 
-import homework.models.LoanApplication;
-import homework.models.LoanScheduler;
+import homework.domains.LoanApplication;
+import homework.domains.LoanScheduler;
 
 public interface ValidationService {
 

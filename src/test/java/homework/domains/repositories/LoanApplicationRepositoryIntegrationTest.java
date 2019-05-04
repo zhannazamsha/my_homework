@@ -1,8 +1,8 @@
-package homework.repositories;
+package homework.domains.repositories;
 
-import homework.models.Company;
-import homework.models.LoanApplication;
-import homework.models.LoanApplicationStatus;
+import homework.domains.Company;
+import homework.domains.LoanApplication;
+import homework.domains.LoanApplicationStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ public class LoanApplicationRepositoryIntegrationTest {
         entityManager.persist(loanApplication.getCompany());
         entityManager.persist(loanApplication);
         entityManager.flush();
-        Iterable<LoanApplication> loanApplications = loanApplicationRepository.findAllNonBlocklisted();
+        Iterable<LoanApplication> loanApplications = loanApplicationRepository.findAllNonBlacklisted();
         assertThat(loanApplications).isEmpty();
     }
 

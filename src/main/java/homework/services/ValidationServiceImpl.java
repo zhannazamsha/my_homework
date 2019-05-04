@@ -1,11 +1,15 @@
 package homework.services;
 
+import homework.domains.LoanApplication;
+import homework.domains.LoanScheduler;
 import homework.exceptions.CompanyInBlacklistException;
 import homework.exceptions.MissedDataException;
 import homework.exceptions.ValidationFailedException;
-import homework.models.LoanApplication;
-import homework.models.LoanScheduler;
+import homework.utils.DateConversions;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
@@ -27,10 +31,15 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     private double calculateMonthlyExpenses(double amount, short term, float interest) {
-        double monthPrinciple = amount / term;
-        double monthCommission = amount * interest;
-        return monthCommission + monthPrinciple;
+        return getMonthPrinciple(amount, term) + getMonthCommission(amount, interest);
+    }
 
+    private double getMonthCommission(double amount, float interest) {
+        return amount * interest;
+    }
+
+    private double getMonthPrinciple(double amount, short term) {
+        return amount / term;
     }
 
     public LoanScheduler calculateLoanScheduler(LoanApplication loanApplication) {
@@ -39,12 +48,18 @@ public class ValidationServiceImpl implements ValidationService {
                 .term(loanApplication.getTerm())
                 .confirmationDate(loanApplication.getConfirmationDate())
                 .interestRate(LoanScheduler.INTEREST_RATE).build();
-        double monthlyExpense = calculateMonthlyExpenses(loanApplication.getLoanAmount(),
-                loanApplication.getTerm(), LoanScheduler.INTEREST_RATE);
-
-
+        createMonthlyExpenseCalendar(loanApplication, loanScheduler);
         return loanScheduler;
+    }
 
+    private void createMonthlyExpenseCalendar(LoanApplication loanApplication, LoanScheduler loanScheduler) {
+        double monthlyCommision = getMonthCommission(loanApplication.getLoanAmount(), LoanScheduler.INTEREST_RATE);
+        double monthlyPrinciple = getMonthPrinciple(loanApplication.getLoanAmount(), loanApplication.getTerm());
+        LocalDate paymentDateStart = DateConversions.dateToLocalDate(loanApplication.getConfirmationDate());
+        for (int i = 0; i < loanApplication.getTerm(); i++) {
+            loanScheduler.createMonthlyExpens(DateConversions.localDateToDate(paymentDateStart.plusMonths(i + 1))
+                    , monthlyPrinciple, monthlyCommision);
+        }
     }
 
 
