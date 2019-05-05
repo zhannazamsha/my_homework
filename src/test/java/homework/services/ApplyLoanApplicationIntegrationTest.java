@@ -44,8 +44,6 @@ public class ApplyLoanApplicationIntegrationTest {
     @MockBean
     private BlacklistService blacklistService;
 
-    @MockBean
-    private ValidationService ValidationService;
 
 
     @Before

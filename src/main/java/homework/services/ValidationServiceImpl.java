@@ -20,7 +20,7 @@ public class ValidationServiceImpl implements ValidationService {
         if (loanApplication.getCompany().isBlacklisted()) {
             throw new CompanyInBlacklistException("Validation failed. Company is in Blacklist.");
         }
-        if (loanApplication.getYearlyTurnover().isNaN()) {
+        if (loanApplication.getYearlyTurnover() == null) {
             throw new MissedDataException("Yearly Turnover is not set");
         }
         double maxAllowedMonthlyLimit = (loanApplication.getYearlyTurnover() / 12) * 0.3;
@@ -28,18 +28,6 @@ public class ValidationServiceImpl implements ValidationService {
                 loanApplication.getTerm(), LoanScheduler.INTEREST_RATE) > maxAllowedMonthlyLimit) {
             throw new ValidationFailedException("Monthly expenses of loan is greater than max allowed monthly limit");
         }
-    }
-
-    private double calculateMonthlyExpenses(double amount, short term, float interest) {
-        return getMonthPrinciple(amount, term) + getMonthCommission(amount, interest);
-    }
-
-    private double getMonthCommission(double amount, float interest) {
-        return amount * interest;
-    }
-
-    private double getMonthPrinciple(double amount, short term) {
-        return amount / term;
     }
 
     public LoanScheduler calculateLoanScheduler(LoanApplication loanApplication) {
@@ -60,6 +48,18 @@ public class ValidationServiceImpl implements ValidationService {
             loanScheduler.createMonthlyExpens(DateConversions.localDateToDate(paymentDateStart.plusMonths(i + 1))
                     , monthlyPrinciple, monthlyCommision);
         }
+    }
+
+    private double calculateMonthlyExpenses(double amount, short term, float interest) {
+        return getMonthPrinciple(amount, term) + getMonthCommission(amount, interest);
+    }
+
+    private double getMonthCommission(double amount, float interest) {
+        return amount * interest;
+    }
+
+    private double getMonthPrinciple(double amount, short term) {
+        return amount / term;
     }
 
 

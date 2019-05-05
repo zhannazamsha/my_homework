@@ -1,5 +1,6 @@
 package homework.domains;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class LoanScheduler implements Serializable {
     private short term;
     private double totalPrincipal;
     private double totalCommission;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date confirmationDate;
     @Builder.Default
     private List<MonthlyPayment> monthlyPayments = Lists.newArrayList();
@@ -38,7 +40,8 @@ public class LoanScheduler implements Serializable {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    class MonthlyPayment {
+    public static class MonthlyPayment {
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private Date termDate;
         private double principal;
         private double commission;

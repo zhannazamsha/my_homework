@@ -39,6 +39,8 @@ public class ConfirmRejectLoanApplicationServiceIntegrationTest {
     @MockBean
     private LoanApplicationRepository loanApplicationRepository;
 
+    @MockBean
+    private ValidationService ValidationService;
 
 
     @Before

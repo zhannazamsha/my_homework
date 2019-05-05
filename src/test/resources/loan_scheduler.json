@@ -1,0 +1,70 @@
+{
+  "amount": 400.0,
+  "interestRate": 0.029999999329447746,
+  "term": 12,
+  "totalPrincipal": 0.0,
+  "totalCommission": 0.0,
+  "confirmationDate": "2019-05-30",
+  "monthlyPayments": [
+    {
+      "termDate": "2019-06-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2019-07-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2019-08-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2019-09-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2019-10-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2019-11-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2019-12-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2020-01-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2020-02-29",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2020-03-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2020-04-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    },
+    {
+      "termDate": "2020-05-30",
+      "principal": 33.333333333333336,
+      "commission": 11.999999731779099
+    }
+  ]
+}
