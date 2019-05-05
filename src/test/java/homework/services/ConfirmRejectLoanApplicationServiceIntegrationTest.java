@@ -4,6 +4,7 @@ package homework.services;
 import homework.domains.Company;
 import homework.domains.LoanApplication;
 import homework.domains.LoanApplicationStatus;
+import homework.domains.LoanScheduler;
 import homework.domains.repositories.LoanApplicationRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -40,7 +41,7 @@ public class ConfirmRejectLoanApplicationServiceIntegrationTest {
     private LoanApplicationRepository loanApplicationRepository;
 
     @MockBean
-    private ValidationService ValidationService;
+    private ValidationService validationService;
 
 
     @Before
@@ -54,8 +55,7 @@ public class ConfirmRejectLoanApplicationServiceIntegrationTest {
         Mockito.when(loanApplicationRepository.findByIdForStatusChange(1L, LoanApplicationStatus.APPLIED))
                 .thenReturn(java.util.Optional.ofNullable(loanApplication));
         Mockito.when(loanApplicationRepository.findAllNonBlacklisted()).thenReturn(loanApplications);
-
-
+        Mockito.when(validationService.calculateLoanScheduler(loanApplication)).thenReturn(new LoanScheduler());
     }
 
 
@@ -67,6 +67,14 @@ public class ConfirmRejectLoanApplicationServiceIntegrationTest {
                 .isEqualTo(registrationNum);
         assertThat(found.getStatus())
                 .isEqualTo(LoanApplicationStatus.REJECTED);
+    }
+
+    @Test
+    public void confirmApplication_ShouldBeStatusConfirmed() {
+        LoanScheduler found = loanApplicationService.confirmApplication(1L);
+        assertThat(found)
+                .isNotEqualTo(null);
+
     }
 
 
