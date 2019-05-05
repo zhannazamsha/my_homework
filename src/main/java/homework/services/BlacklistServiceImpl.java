@@ -19,6 +19,8 @@ public class BlacklistServiceImpl implements BlacklistService {
     @Autowired
     private LoanApplicationRepository loanApplicationRepository;
 
+    private final static int MAX_ALLOWED_APPLIES_PER_MINUTE = 2;
+
     @Override
     public boolean isCompanyBlacklisted(LoanApplication loanApplication) {
         Optional<Company> company = companyRepository
@@ -26,13 +28,17 @@ public class BlacklistServiceImpl implements BlacklistService {
         return (company.isPresent() ? company.get().isBlacklisted() : false);
     }
 
+    @Override
     public void blacklistCheck(Company company) {
-        if (loanApplicationRepository.findByCompanyAndDate(company,
-                DateConversions.localDateToDate(LocalDateTime.now().minusMinutes(1).toLocalDate()))
-                .size() > 2) {
+        if (applyedWithinMinute(company) > MAX_ALLOWED_APPLIES_PER_MINUTE) {
             company.setBlacklisted(true);
             companyRepository.save(company);
         }
+    }
+
+    private int applyedWithinMinute(Company company) {
+        return loanApplicationRepository.findByCompanyAndDate(company,
+                DateConversions.localDateToDate(LocalDateTime.now().minusMinutes(1).toLocalDate())).size();
     }
 
 

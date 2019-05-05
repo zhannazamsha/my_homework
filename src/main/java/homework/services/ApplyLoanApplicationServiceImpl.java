@@ -44,5 +44,7 @@ public class ApplyLoanApplicationServiceImpl implements ApplyLoanApplicationServ
     private void setDefaultValues(LoanApplication loanApplication) {
         loanApplication.setStatus(LoanApplicationStatus.APPLIED);
         loanApplication.setCreationDate(new Date());
+        Optional<Short> optional = Optional.ofNullable(loanApplication.getTerm());
+        loanApplication.setTerm(optional.orElse(LoanApplication.DEFAULT_TERM_VALUE));
     }
 }

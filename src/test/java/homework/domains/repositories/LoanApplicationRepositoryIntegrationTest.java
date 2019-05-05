@@ -76,6 +76,28 @@ public class LoanApplicationRepositoryIntegrationTest {
     }
 
     @Test
+    public void findByIdForStatusChange_oneEntityAdded_shouldBeFound() {
+        LoanApplication loanApplication = buildLoanApplicationObject();
+        entityManager.persist(loanApplication.getCompany());
+        entityManager.persist(loanApplication);
+        entityManager.flush();
+        Optional<LoanApplication> found = loanApplicationRepository
+                .findByIdForStatusChange(loanApplication.getId(), LoanApplicationStatus.APPLIED);
+        assertThat(found.isPresent());
+    }
+
+    @Test
+    public void findByIdForStatusChange_oneEntityAddedWithWrongStatus_shouldNotBeFound() {
+        LoanApplication loanApplication = buildLoanApplicationObject();
+        entityManager.persist(loanApplication.getCompany());
+        entityManager.persist(loanApplication);
+        entityManager.flush();
+        Optional<LoanApplication> found = loanApplicationRepository
+                .findByIdForStatusChange(loanApplication.getId(), LoanApplicationStatus.CONFIRMED);
+        assertThat(!found.isPresent());
+    }
+
+    @Test
     public void findByCompanyAndDate_twoEntitiesAdded_shouldBeFound() {
         LoanApplication loanApplication = buildLoanApplicationObject();
         entityManager.persist(loanApplication.getCompany());

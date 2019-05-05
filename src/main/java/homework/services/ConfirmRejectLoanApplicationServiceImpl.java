@@ -22,7 +22,7 @@ public class ConfirmRejectLoanApplicationServiceImpl implements ConfirmRejectLoa
 
     @Override
     public LoanScheduler confirmApplication(Long id) {
-        Optional<LoanApplication> loanApplication = loanApplicationRepository.findById(id);
+        Optional<LoanApplication> loanApplication = loanApplicationRepository.findByIdForStatusChange(id, LoanApplicationStatus.APPLIED);
         loanApplication.orElseThrow(() -> new ApplicationNotFoundException("Loan application not found"));
         LoanApplication foundLoanApplication = loanApplication.get();
         if (!foundLoanApplication.getStatus().equals(LoanApplicationStatus.CONFIRMED)) {
@@ -36,7 +36,7 @@ public class ConfirmRejectLoanApplicationServiceImpl implements ConfirmRejectLoa
 
 
     public LoanApplication rejectApplication(Long id) {
-        Optional<LoanApplication> loanApplication = loanApplicationRepository.findById(id);
+        Optional<LoanApplication> loanApplication = loanApplicationRepository.findByIdForStatusChange(id, LoanApplicationStatus.APPLIED);
         loanApplication.orElseThrow(() -> new ApplicationNotFoundException("Loan application not found"));
         LoanApplication foundLoanApplication = loanApplication.get();
         foundLoanApplication.setStatus(LoanApplicationStatus.REJECTED);

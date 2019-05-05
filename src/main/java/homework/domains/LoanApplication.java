@@ -40,8 +40,7 @@ public class LoanApplication implements Serializable {
     @Min(value = 1, message = "Term is out of range (1-12) ")
     @Max(value = 12, message = "Term is out of range (1-12) ")
     @Column(nullable = false)
-    @Builder.Default
-    private Short term = 6;
+    private Short term;
 
     @Enumerated(EnumType.STRING)
     @NotNull

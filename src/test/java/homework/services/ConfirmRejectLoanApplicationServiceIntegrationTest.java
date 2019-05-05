@@ -51,7 +51,7 @@ public class ConfirmRejectLoanApplicationServiceIntegrationTest {
                 .loanAmount(10000.00).company(company).term((short) 5).status(LoanApplicationStatus.APPLIED).build();
         List loanApplications = Lists.newArrayList(loanApplication);
 
-        Mockito.when(loanApplicationRepository.findById(1L))
+        Mockito.when(loanApplicationRepository.findByIdForStatusChange(1L, LoanApplicationStatus.APPLIED))
                 .thenReturn(java.util.Optional.ofNullable(loanApplication));
         Mockito.when(loanApplicationRepository.findAllNonBlacklisted()).thenReturn(loanApplications);
 
