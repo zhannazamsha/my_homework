@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class ValidationServiceIntegrationTest {
+public class ValidationServiceTest {
 
 
     @Autowired

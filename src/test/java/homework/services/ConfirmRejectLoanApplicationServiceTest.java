@@ -22,7 +22,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class ConfirmRejectLoanApplicationServiceIntegrationTest {
+public class ConfirmRejectLoanApplicationServiceTest {
 
 
     @Autowired

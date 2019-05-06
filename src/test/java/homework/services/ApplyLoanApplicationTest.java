@@ -21,7 +21,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-public class ApplyLoanApplicationIntegrationTest {
+public class ApplyLoanApplicationTest {
 
     @Autowired
     private ApplyLoanApplicationServiceImpl applyLoanApplicationService;
